@@ -12,9 +12,15 @@
           v-for="product in filteredProducts"
           :key="product.id"
           :product="product"
+          @click="selectedProduct = product"
         />
       </div>
     </main>
+    <ProductModal
+      v-if="selectedProduct"
+      :product="selectedProduct"
+      @close="selectedProduct = null"
+    />
   </div>
 </template>
 
@@ -24,10 +30,12 @@ import type { Product, ProductsResponse } from './types/product'
 import NavBar from './components/NavBar.vue'
 import FilterBar from './components/FilterBar.vue'
 import ProductCard from './components/ProductCard.vue'
+import ProductModal from './components/ProductModal.vue'
 
 const products = ref<Product[]>([])
 const selectedCategory = ref('All')
 const searchQuery = ref('')
+const selectedProduct = ref<Product | null>(null)
 
 const categories = computed(() => {
   const cats = [...new Set(products.value.map(p => p.category))]
