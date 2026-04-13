@@ -1,5 +1,33 @@
-# Vue 3 + TypeScript + Vite
+# Haylee - Vue 3 SPA
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A modern e-commerce Single Page Application built with Vue 3, TypeScript, and Tailwind CSS.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Tech Stack
+- Vue 3 (Composition API)
+- TypeScript
+- Vite
+- Tailwind CSS
+- Pinia (State Management)
+
+## Features
+- Browse 100+ products from DummyJSON API
+- Filter products by category
+- Search products by name
+- Click any product to view full details
+- Add products to cart (persists during session)
+
+## Component Architecture
+- `NavBar.vue` — Search input and cart counter
+- `FilterBar.vue` — Category filter chips
+- `ProductCard.vue` — Individual product display
+- `ProductModal.vue` — Product detail view
+- `stores/cart.ts` — Pinia cart store
+
+## Installation
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:5173
