@@ -19,7 +19,10 @@
             <span class="text-yellow-400">★</span>
             <span class="text-sm text-gray-600">{{ product.rating }} rating</span>
           </div>
-          <button class="mt-6 w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition-colors">
+          <button
+            @click="addToCart"
+            class="mt-6 w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition-colors"
+          >
             Add to Cart
           </button>
         </div>
@@ -30,12 +33,19 @@
 
 <script setup lang="ts">
 import type { Product } from '../types/product'
+import { useCartStore } from '../stores/cart'
 
-defineProps<{
+const props = defineProps<{
   product: Product
 }>()
 
 defineEmits<{
   close: []
 }>()
+
+const cartStore = useCartStore()
+
+function addToCart() {
+  cartStore.addToCart(props.product)
+}
 </script>

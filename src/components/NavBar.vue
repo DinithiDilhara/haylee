@@ -8,14 +8,21 @@
       placeholder="Search products..."
       class="flex-1 max-w-md mx-auto bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 text-sm outline-none"
     />
-    <span class="text-white text-sm ml-auto">Cart (0)</span>
+    <span class="text-white text-sm ml-auto">
+      Cart
+      <span class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded-full ml-1">
+        {{ cartStore.totalItems }}
+      </span>
+    </span>
   </nav>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useCartStore } from '../stores/cart'
 
 const searchQuery = ref('')
+const cartStore = useCartStore()
 
 defineEmits<{
   search: [query: string]
