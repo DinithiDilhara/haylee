@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <NavBar />
+    <NavBar @search="searchQuery = $event" />
     <FilterBar
       :categories="categories"
       :selected="selectedCategory"
@@ -27,6 +27,7 @@ import ProductCard from './components/ProductCard.vue'
 
 const products = ref<Product[]>([])
 const selectedCategory = ref('All')
+const searchQuery = ref('')
 
 const categories = computed(() => {
   const cats = [...new Set(products.value.map(p => p.category))]
@@ -34,8 +35,16 @@ const categories = computed(() => {
 })
 
 const filteredProducts = computed(() => {
-  if (selectedCategory.value === 'All') return products.value
-  return products.value.filter(p => p.category === selectedCategory.value)
+  let result = products.value
+  if (selectedCategory.value !== 'All') {
+    result = result.filter(p => p.category === selectedCategory.value)
+  }
+  if (searchQuery.value.trim()) {
+    result = result.filter(p =>
+      p.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  }
+  return result
 })
 
 onMounted(async () => {
