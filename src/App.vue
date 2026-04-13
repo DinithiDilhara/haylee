@@ -1,9 +1,15 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <NavBar />
-    <div v-for="product in products" :key="product.id" class="p-4">
-      {{ product.title }} - ${{ product.price }}
-    </div>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <ProductCard
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
+        />
+      </div>
+    </main>
   </div>
 </template>
 
@@ -11,6 +17,7 @@
 import { ref, onMounted } from 'vue'
 import type { Product, ProductsResponse } from './types/product'
 import NavBar from './components/NavBar.vue'
+import ProductCard from './components/ProductCard.vue'
 
 const products = ref<Product[]>([])
 
