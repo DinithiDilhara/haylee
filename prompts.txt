@@ -1,0 +1,17 @@
+The aim 01: Create TypeScript interfaces for DummyJSON product API
+Actual prompt: Create a TypeScript interface for a product from DummyJSON API with fields: id, title, description, category, price, discountPercentage, rating, stock, brand, thumbnail, images, availabilityStatus
+
+The aim 02: Create a NavBar component with search
+Actual prompt: Create a Vue 3 NavBar component with Tailwind CSS, dark background, logo text left, search input center, cart counter right
+
+The aim 03: Create a ProductCard component
+Actual prompt: Create a Vue 3 ProductCard component that accepts a Product prop and displays thumbnail image, brand, title, price and rating using Tailwind CSS
+
+The aim 04: Create a FilterBar component
+Actual prompt: Create a Vue 3 FilterBar component that receives categories array and selected category as props, emits filter event when chip is clicked, uses Tailwind CSS pill styling
+
+The aim 05: Create a ProductModal component
+Actual prompt: Create a Vue 3 modal component that displays full product details including image, title, brand, price with discount, availability status, description, rating and Add to Cart button
+
+The aim 06: Implement shopping cart with Pinia
+Actual prompt: Create a Pinia store for shopping cart in Vue 3 TypeScript with addToCart, removeFromCart functions and computed totalItems and totalPrice
