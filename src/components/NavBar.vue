@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-gray-900 h-16 flex items-center px-6 gap-4">
-    <span class="text-white font-bold  text-xl" style="font-family: 'Alegreya Sans' ,serif;">Haylee</span>
+    <span class="text-white text-xl font-bold" style="font-family: 'Alegreya Sans', serif;">Haylee</span>
     <input
       v-model="searchQuery"
       @input="$emit('search', searchQuery)"
@@ -17,8 +17,14 @@
       </span>
     </span>
     <button
+      @click="toggleDark"
+      class="text-gray-400 hover:text-white text-sm transition-colors"
+    >
+      {{ isDark ? '☀️' : '🌙' }}
+    </button>
+    <button
       @click="handleLogout"
-      class="text-gray-400 hover:text-white text-sm transition-colors ml-2"
+      class="text-gray-400 hover:text-white text-sm transition-colors"
     >
       Logout
     </button>
@@ -33,11 +39,17 @@ import { useAuthStore } from '../stores/auth'
 const searchQuery = ref('')
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const isDark = ref(false)
 
 defineEmits<{
   search: [query: string]
   openCart: []
 }>()
+
+function toggleDark() {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+}
 
 function handleLogout() {
   authStore.logout()
