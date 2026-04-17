@@ -20,7 +20,40 @@
         </RouterLink>
       </div>
     </main>
-    <CartDrawer v-if="showCart" @close="showCart = false" />
+
+    <!-- Cart Drawer with dimmed background slot -->
+    <div v-if="showCart" class="fixed inset-0 z-50 flex">
+      <!-- Left dimmed side -->
+      <div class="flex-1 overflow-hidden relative" style="pointer-events: none;">
+        <div
+          class="absolute inset-0"
+          style="background: rgba(13,18,14,0.6); backdrop-filter: blur(2px); z-index: 1;"
+        ></div>
+        <div
+          class="w-full h-full"
+          :style="{ backgroundImage: `url(${im3})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
+        >
+          <NavBar @search="searchQuery = $event" @openCart="() => {}" />
+          <FilterBar
+            :categories="categories"
+            :selected="selectedCategory"
+            @filter="() => {}"
+          />
+          <main class="max-w-7xl mx-auto px-6 py-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <ProductCard
+                v-for="product in filteredProducts"
+                :key="product.id"
+                :product="product"
+              />
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <!-- Right cart panel -->
+      <CartDrawer @close="showCart = false" />
+    </div>
   </div>
 </template>
 
