@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
-    <img :src="product.thumbnail" :alt="product.title" class="w-full h-48 object-cover bg-gray-100"/>
+  <div class="rounded-xl overflow-hidden cursor-pointer transition-shadow hover:shadow-lg" style="background: #E8E9E0; border: 1px solid #C4C8AC;">
+    <img :src="product.thumbnail" :alt="product.title" class="w-full h-48 object-cover" style="background: #fff;" />
     <div class="p-3">
-      <p class="text-xs text-gray-500 uppercase tracking-wide">{{ product.brand }}</p>
-      <p class="text-sm font-medium text-gray-900 mt-1 line-clamp-2">{{ product.title }}</p>
+      <p class="text-xs uppercase tracking-wide" style="color: #45553D;">{{ product.brand }}</p>
+      <p class="text-sm font-medium mt-1 line-clamp-2" style="color: #0D120E;">{{ product.title }}</p>
       <div class="flex justify-between items-center mt-3">
-        <span class="text-indigo-600 font-bold">${{ product.price }}</span>
-        <span class="text-xs text-gray-500">★ {{ product.rating }}</span>
+        <span class="font-bold" style="color: #45553D;">${{ product.price }}</span>
+        <span class="text-xs" style="color: #6D7E5F;">★ {{ product.rating }}</span>
       </div>
     </div>
   </div>

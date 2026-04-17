@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    class="min-h-screen"
+    :style="{ backgroundImage: `url(${im3})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }"
+  >
     <NavBar @search="searchQuery = $event" @openCart="showCart = true" />
     <FilterBar
       :categories="categories"
@@ -29,6 +32,7 @@ import FilterBar from '../components/FilterBar.vue'
 import ProductCard from '../components/ProductCard.vue'
 import CartDrawer from '../components/CartDrawer.vue'
 import { useAuthStore } from '../stores/auth'
+import im3 from '../assets/im3.jpg'
 
 const authStore = useAuthStore()
 const products = ref<Product[]>([])

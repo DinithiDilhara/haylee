@@ -1,30 +1,35 @@
 <template>
-  <nav class="bg-gray-900 h-16 flex items-center px-6 gap-4">
-    <span class="text-white text-xl font-bold" style="font-family: 'Alegreya Sans', serif;">Haylee</span>
+  <nav class="h-16 flex items-center px-6 gap-4" style="background: #0D120E;">
+    <span class="text-xl font-bold" style="color: #E8E9E0; font-family: 'Alegreya Sans', serif;">Haylee</span>
     <input
       v-model="searchQuery"
       @input="$emit('search', searchQuery)"
       type="text"
       placeholder="Search products..."
-      class="flex-1 max-w-md mx-auto bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 text-sm outline-none"
+      class="flex-1 max-w-md mx-auto rounded-lg px-4 py-2 text-sm outline-none"
+      style="background: #1a2a1c; color: #E8E9E0; border: 1px solid #45553D;"
     />
     <span
       @click="$emit('openCart')"
-      class="text-white text-sm cursor-pointer hover:text-indigo-300 transition-colors">
+      class="text-sm cursor-pointer transition-colors"
+      style="color: #E8E9E0;"
+    >
       Cart
-      <span class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded-full ml-1">
+      <span class="text-xs px-2 py-0.5 rounded-full ml-1" style="background: #6D7E5F; color: #E8E9E0;">
         {{ cartStore.totalItems }}
       </span>
     </span>
     <button
       @click="toggleDark"
-      class="text-gray-400 hover:text-white text-sm transition-colors"
+      class="text-sm transition-colors"
+      style="color: #C4C8AC;"
     >
       {{ isDark ? '☀️' : '🌙' }}
     </button>
     <button
       @click="handleLogout"
-      class="text-gray-400 hover:text-white text-sm transition-colors"
+      class="text-sm transition-colors"
+      style="color: #C4C8AC;"
     >
       Logout
     </button>
