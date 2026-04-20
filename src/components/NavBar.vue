@@ -20,11 +20,11 @@
       </span>
     </span>
     <button
-      @click="toggleDark"
+      @click="themeStore.toggleDark()"
       class="text-sm transition-colors"
       style="color: #C4C8AC;"
     >
-      {{ isDark ? '☀️' : '🌙' }}
+      {{ themeStore.isDark ? '☀️' : '🌙' }}
     </button>
     <button
       @click="handleLogout"
@@ -38,25 +38,24 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
+import { useThemeStore } from '../stores/theme'
 
 const searchQuery = ref('')
 const cartStore = useCartStore()
 const authStore = useAuthStore()
-const isDark = ref(false)
+const themeStore = useThemeStore()
+const router = useRouter()
 
 defineEmits<{
   search: [query: string]
   openCart: []
 }>()
 
-function toggleDark() {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark', isDark.value)
-}
-
 function handleLogout() {
   authStore.logout()
+  router.push('/login')
 }
 </script>

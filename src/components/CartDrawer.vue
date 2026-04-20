@@ -1,7 +1,13 @@
 <template>
-  <div class="w-96 h-full flex flex-col shadow-xl overflow-y-auto" style="background: #E8E9E0; min-width: 380px;">
-    <div class="flex items-center justify-between p-6" style="border-bottom: 1px solid #C4C8AC;">
-      <h2 class="text-lg font-bold" style="color: #0D120E;">
+  <div
+    class="w-96 h-full flex flex-col shadow-xl overflow-y-auto"
+    :style="themeStore.isDark ? 'background: #1a2a1c; min-width: 380px;' : 'background: #E8E9E0; min-width: 380px;'"
+  >
+    <div
+      class="flex items-center justify-between p-6"
+      :style="themeStore.isDark ? 'border-bottom: 1px solid #45553D;' : 'border-bottom: 1px solid #C4C8AC;'"
+    >
+      <h2 class="text-lg font-bold" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">
         Cart
         <span class="text-sm px-2 py-0.5 rounded-full ml-1" style="background: #6D7E5F; color: #E8E9E0;">
           {{ cartStore.totalItems }}
@@ -20,35 +26,26 @@
           v-for="item in cartStore.items"
           :key="item.product.id"
           class="flex gap-4 items-center pb-4"
-          style="border-bottom: 1px solid #C4C8AC;"
+          :style="themeStore.isDark ? 'border-bottom: 1px solid #45553D;' : 'border-bottom: 1px solid #C4C8AC;'"
         >
-          <img
-            :src="item.product.thumbnail"
-            :alt="item.product.title"
-            class="w-16 h-16 object-cover rounded-lg"
-            style="background: #fff;"
-          />
+          <img :src="item.product.thumbnail" :alt="item.product.title" class="w-16 h-16 object-cover rounded-lg" style="background: #fff;" />
           <div class="flex-1">
             <p class="text-xs uppercase tracking-wide" style="color: #45553D;">{{ item.product.brand }}</p>
-            <p class="text-sm font-medium line-clamp-1" style="color: #0D120E;">{{ item.product.title }}</p>
+            <p class="text-sm font-medium line-clamp-1" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">{{ item.product.title }}</p>
             <p class="text-sm font-bold" style="color: #45553D;">${{ item.product.price }}</p>
             <p class="text-xs" style="color: #6D7E5F;">Qty: {{ item.quantity }}</p>
           </div>
           <div class="flex flex-col items-end gap-2">
-            <button
-              @click="cartStore.removeFromCart(item.product.id)"
-              class="text-sm"
-              style="color: #c0392b;"
-            >Remove</button>
+            <button @click="cartStore.removeFromCart(item.product.id)" class="text-sm" style="color: #c0392b;">Remove</button>
             <span class="text-xs" style="color: #6D7E5F;">★ {{ item.product.rating }}</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="p-6" style="border-top: 1px solid #C4C8AC;">
+    <div class="p-6" :style="themeStore.isDark ? 'border-top: 1px solid #45553D;' : 'border-top: 1px solid #C4C8AC;'">
       <div class="flex justify-between items-center mb-4">
-        <span class="font-bold text-lg" style="color: #0D120E;">Total</span>
+        <span class="font-bold text-lg" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">Total</span>
         <span class="font-bold text-xl" style="color: #45553D;">${{ cartStore.totalPrice.toFixed(2) }}</span>
       </div>
       <button
@@ -65,7 +62,11 @@
 
 <script setup lang="ts">
 import { useCartStore } from '../stores/cart'
+import { useThemeStore } from '../stores/theme'
+
 const cartStore = useCartStore()
+const themeStore = useThemeStore()
+
 defineEmits<{
   close: []
 }>()

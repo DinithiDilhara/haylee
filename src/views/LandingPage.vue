@@ -1,4 +1,3 @@
-
 <template>
   <div
     class="w-full h-screen flex flex-col items-center justify-center relative overflow-hidden"
@@ -6,8 +5,16 @@
   >
     <!-- Nav — only on stage 2 -->
     <div v-if="stage === 2" class="absolute top-6 right-8 flex gap-3">
-      <button class="bg-green-400 text-white text-sm px-4 py-1 rounded-full">About us</button>
-      <button class="bg-green-500 text-white text-sm px-4 py-1 rounded-full">Contact</button>
+      <button
+        @click="router.push('/about')"
+        class="text-white text-sm px-4 py-1 rounded-full"
+        style="background: #45553D;"
+      >About us</button>
+      <button
+        @click="router.push('/contact')"
+        class="text-white text-sm px-4 py-1 rounded-full"
+        style="background: #45553D;"
+      >Contact</button>
     </div>
 
     <!-- Center content — both stages -->
@@ -20,7 +27,10 @@
     <button
       v-if="stage === 2"
       @click="router.push('/login')"
-      class="flex items-center gap-2 bg-green-600 bg-opacity-60 text-white px-8 py-3 rounded-full hover:bg-opacity-80 transition-all"
+      class="flex items-center gap-2 text-white px-8 py-3 rounded-full transition-all"
+      style="background: #45553D;"
+      onmouseover="this.style.background='#6D7E5F'"
+      onmouseout="this.style.background='#45553D'"
     >
       shop now →
     </button>
