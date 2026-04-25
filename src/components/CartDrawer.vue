@@ -15,7 +15,6 @@
       </h2>
       <button @click="$emit('close')" class="text-xl font-bold" style="color: #45553D;">✕</button>
     </div>
-
     <div class="flex-1 overflow-y-auto p-6">
       <div v-if="cartStore.items.length === 0" class="text-center mt-20" style="color: #6D7E5F;">
         <p class="text-4xl mb-4">🛒</p>
@@ -42,13 +41,13 @@
         </div>
       </div>
     </div>
-
     <div class="p-6" :style="themeStore.isDark ? 'border-top: 1px solid #45553D;' : 'border-top: 1px solid #C4C8AC;'">
       <div class="flex justify-between items-center mb-4">
         <span class="font-bold text-lg" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">Total</span>
         <span class="font-bold text-xl" style="color: #45553D;">${{ cartStore.totalPrice.toFixed(2) }}</span>
       </div>
       <button
+        @click="handleCheckout"
         class="w-full text-white py-3 rounded-xl font-medium transition-colors"
         style="background: #45553D;"
         onmouseover="this.style.background='#6D7E5F'"
@@ -63,11 +62,18 @@
 <script setup lang="ts">
 import { useCartStore } from '../stores/cart'
 import { useThemeStore } from '../stores/theme'
+import { useRouter } from 'vue-router'
 
 const cartStore = useCartStore()
 const themeStore = useThemeStore()
+const router = useRouter()
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
 }>()
+
+function handleCheckout() {
+  emit('close')
+  router.push('/checkout')
+}
 </script>
