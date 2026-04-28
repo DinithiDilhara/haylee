@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <button @click="router.push('/home')" class="back-btn">
+    <button @click="router.push('/')" class="back-btn">
       Back
     </button>
 

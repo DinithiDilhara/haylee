@@ -3,7 +3,7 @@
     class="min-h-screen"
     :style="{ backgroundImage: `url(${im3})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }"
   >
-    <NavBar @openCart="showCart = true" />
+    <button @click="router.push('/')" class="back-btn">Back</button>
     <div class="max-w-4xl mx-auto px-6 py-10">
       <div
         class="rounded-2xl p-12"
@@ -72,17 +72,15 @@
         </div>
       </div>
     </div>
-    <CartDrawer v-if="showCart" @close="showCart = false" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import NavBar from '../components/NavBar.vue'
-import CartDrawer from '../components/CartDrawer.vue'
+import { useRouter } from 'vue-router'
 import im3 from '../assets/im3.jpg'
 
-const showCart = ref(false)
+const router = useRouter()
 const submitted = ref(false)
 const form = ref({
   name: '',
@@ -98,3 +96,18 @@ function handleSubmit() {
   }
 }
 </script>
+
+<style scoped>
+.back-btn {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  background: #45553D;
+  color: white;
+  border: none;
+  padding: 8px 28px;
+  border-radius: 25px;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
