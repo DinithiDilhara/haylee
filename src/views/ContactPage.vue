@@ -4,7 +4,6 @@
     :style="{ backgroundImage: `url(${im3})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }"
   >
     <NavBar @openCart="showCart = true" />
-
     <div class="max-w-4xl mx-auto px-6 py-10">
       <div
         class="rounded-2xl p-12"
@@ -12,7 +11,6 @@
       >
         <p class="text-xs uppercase tracking-widest mb-2" style="color: #45553D;">Get in touch</p>
         <h1 class="text-4xl font-bold mb-8" style="color: #0D120E;">Contact us</h1>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
           <div>
             <div class="mb-4">
@@ -55,7 +53,6 @@
               {{ submitted ? 'Message Sent!' : 'Send Message' }}
             </button>
           </div>
-
           <div class="flex flex-col gap-4 justify-center">
             <div
               class="rounded-xl p-6"
@@ -75,7 +72,6 @@
         </div>
       </div>
     </div>
-
     <CartDrawer v-if="showCart" @close="showCart = false" />
   </div>
 </template>
@@ -88,7 +84,6 @@ import im3 from '../assets/im3.jpg'
 
 const showCart = ref(false)
 const submitted = ref(false)
-
 const form = ref({
   name: '',
   email: '',

@@ -1,6 +1,10 @@
 <template>
   <nav class="h-16 flex items-center px-6 gap-4" style="background: #0D120E;">
-    <span class="text-xl font-bold" style="color: #E8E9E0; font-family: 'Alegreya Sans', serif;">Haylee</span>
+    <span
+      class="text-xl font-bold cursor-pointer"
+      style="color: #E8E9E0; font-family: 'Alegreya Sans', serif;"
+      @click="router.push('/')"
+    >Haylee</span>
     <input
       v-model="searchQuery"
       @input="$emit('search', searchQuery)"
