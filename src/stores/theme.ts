@@ -6,6 +6,8 @@ export const useThemeStore = defineStore('theme', () => {
 
   function toggleDark() {
     isDark.value = !isDark.value
+    // This is the missing line — actually applies dark mode to the DOM
+    document.documentElement.classList.toggle('dark', isDark.value)
   }
 
   return { isDark, toggleDark }
