@@ -1,47 +1,60 @@
 <template>
-  <div
-    class="min-h-screen transition-colors duration-300"
-    :style="{
-      backgroundImage: `url(${im3})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed'
-    }"
-  >
-    <NavBar :showSearch="false" @openCart="showCart = true" />
-    <div class="max-w-4xl mx-auto px-6 py-10">
-      <button @click="router.back()" class="mb-6 text-sm font-medium back-btn">
-        ← Back
-      </button>
-      <div
-        v-if="product"
-        class="product-card-hover rounded-2xl p-12 flex gap-10 items-center product-card"
-        style="min-height: 500px;"
-      >
-        <img
-          :src="product.thumbnail"
-          class="w-72 h-72 object-contain rounded-xl p-4 flex-shrink-0 product-img"
-        />
-        <div class="flex flex-col gap-5 flex-1">
-          <p class="text-xs uppercase tracking-wide brand-text">{{ product.brand }}</p>
-          <h1 class="text-3xl font-bold title-text">{{ product.title }}</h1>
-          <p class="text-base leading-relaxed desc-text">{{ product.description }}</p>
-          <div class="flex items-center gap-3">
-            <span class="text-3xl font-bold price-text">${{ product.price }}</span>
-            <span class="text-sm px-3 py-1 rounded-full badge">In Stock</span>
+  <div class="min-h-screen bg-main">
+    <div class="sticky-header">
+      <NavBar :showSearch="false" @openCart="showCart = true" />
+
+      <FilterBar
+        :categories="categories"
+        :selected="selectedCategory"
+        @filter="goToCategory"
+      />
+    </div>
+
+    <main class="product-page">
+      <button @click="router.back()" class="back-btn">← Back</button>
+
+      <section v-if="product" class="product-layout">
+        <div class="image-section">
+          <img :src="product.thumbnail" :alt="product.title" class="main-img" />
+        </div>
+
+        <div class="detail-section">
+          <p class="brand">{{ product.brand || product.category }}</p>
+
+          <h1>{{ product.title }}</h1>
+
+          <p class="rating">
+            ★★★★★ <span>{{ product.rating }} reviews</span>
+          </p>
+
+          <p class="price">${{ product.price }}</p>
+
+          <div class="quantity-box">
+            <p>Quantity</p>
+
+            <div class="quantity-control">
+              <button @click="decreaseQty">−</button>
+              <span>{{ quantity }}</span>
+              <button @click="increaseQty">+</button>
+            </div>
           </div>
-          <p class="text-sm rating-text">★ {{ product.rating }} rating</p>
-          <button
-            @click="cartStore.addToCart(product); showCart = true"
-            class="mt-2 px-6 py-3 rounded-xl w-full add-to-cart transition"
-          >
+
+          <p class="description">
+            {{ product.description }}
+          </p>
+
+          <button class="wishlist">♡ Add to Wishlist</button>
+
+          <button class="add-cart" @click="addProductToCart">
             Add to Cart
           </button>
         </div>
-      </div>
-      <div v-else class="text-center mt-20 loading-text">Loading...</div>
-    </div>
-    <div v-if="showCart" class="fixed inset-0 z-50 flex">
+      </section>
+
+      <p v-else class="loading">Loading...</p>
+    </main>
+
+    <div v-if="showCart" class="fixed inset-0 cart-layer flex">
       <div class="flex-1 bg-black/60" @click="showCart = false"></div>
       <CartDrawer @close="showCart = false" />
     </div>
@@ -51,17 +64,68 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useCartStore } from '../stores/cart'
 import type { Product } from '../types/product'
+
 import NavBar from '../components/NavBar.vue'
+import FilterBar from '../components/FilterBar.vue'
 import CartDrawer from '../components/CartDrawer.vue'
-import im3 from '../assets/im3.jpg'
+
+import { useCartStore } from '../stores/cart'
 
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore()
+
 const product = ref<Product | null>(null)
 const showCart = ref(false)
+const quantity = ref(1)
+
+const selectedCategory = ref('All')
+
+const categories = [
+  'All',
+  'beauty',
+  'fragrances',
+  'furniture',
+  'groceries',
+  'home-decoration',
+  'kitchen-accessories',
+  'laptops',
+  'mens-shirts',
+  'mens-shoes',
+  'mens-watches',
+  'mobile-accessories'
+]
+
+function goToCategory(category: string) {
+  selectedCategory.value = category
+
+  if (category === 'All') {
+    router.push('/')
+  } else {
+    router.push({ path: '/', query: { category } })
+  }
+}
+
+function increaseQty() {
+  quantity.value++
+}
+
+function decreaseQty() {
+  if (quantity.value > 1) {
+    quantity.value--
+  }
+}
+
+function addProductToCart() {
+  if (!product.value) return
+
+  for (let i = 0; i < quantity.value; i++) {
+    cartStore.addToCart(product.value)
+  }
+
+  showCart.value = true
+}
 
 onMounted(async () => {
   const res = await fetch(`https://dummyjson.com/products/${route.params.id}`)
@@ -70,38 +134,196 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Light mode */
-.back-btn    { color: #45553D; }
-.product-card {
-  background: rgba(232, 233, 224, 0.45);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.4);
+.bg-main {
+  background: linear-gradient(
+    to bottom,
+    #fffaf5 0%,
+    #f5f2ec 50%,
+    #f8f6f2 100%
+  );
 }
-.product-img { background: #ffffff; }
-.brand-text  { color: #45553D; }
-.title-text  { color: #0D120E; }
-.desc-text   { color: #45553D; }
-.price-text  { color: #45553D; }
-.rating-text { color: #6D7E5F; }
-.badge       { background: #6D7E5F; color: #E8E9E0; }
-.add-to-cart { background: #45553D; color: #ffffff; }
-.add-to-cart:hover { background: #6D7E5F; }
-.loading-text { color: #E8E9E0; }
 
-/* Dark mode — triggered by .dark on <html> */
-:global(.dark) .back-btn { color: #A8B89A; }
-:global(.dark) .product-card {
-  background: rgba(20, 28, 18, 0.65);
-  border: 1px solid rgba(255,255,255,0.1);
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-:global(.dark) .product-img  { background: #1e2a1c; }
-:global(.dark) .brand-text   { color: #A8B89A; }
-:global(.dark) .title-text   { color: #E8E9E0; }
-:global(.dark) .desc-text    { color: #A8B89A; }
-:global(.dark) .price-text   { color: #C5D4B5; }
-:global(.dark) .rating-text  { color: #7E9870; }
-:global(.dark) .badge        { background: #3a4f32; color: #C5D4B5; }
-:global(.dark) .add-to-cart  { background: #3a4f32; color: #E8E9E0; }
-:global(.dark) .add-to-cart:hover { background: #6D7E5F; }
-:global(.dark) .loading-text { color: #A8B89A; }
+
+.cart-layer {
+  z-index: 9999;
+}
+
+.product-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 35px 50px 70px;
+}
+
+.back-btn {
+  margin-bottom: 28px;
+  font-size: 14px;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.image-section {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-img {
+  width: 80%;
+  max-height: 520px;
+  object-fit: contain;
+}
+
+.detail-section {
+  padding: 20px 10px;
+}
+
+.brand {
+  text-transform: uppercase;
+  color: #555;
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 52px;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  color: #111;
+  margin-bottom: 18px;
+}
+
+.rating {
+  color: #f5b400;
+  font-size: 20px;
+  margin-bottom: 22px;
+}
+
+.rating span {
+  color: #333;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #2e3b2c;
+  margin-bottom: 28px;
+}
+
+.quantity-box p {
+  text-transform: uppercase;
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.quantity-control {
+  width: 160px;
+  height: 54px;
+  border: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.quantity-control button {
+  width: 50px;
+  height: 100%;
+  border: none;
+  background: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.quantity-control span {
+  font-size: 18px;
+}
+
+.description {
+  max-width: 650px;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 35px;
+}
+
+.wishlist {
+  display: block;
+  margin: 0 auto 24px;
+  background: none;
+  border: none;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.add-cart {
+  width: 100%;
+  max-width: 560px;
+  padding: 18px;
+  background: #2e3b2c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-cart:hover {
+  background: #445a3a;
+  transform: translateY(-2px);
+}
+
+.loading {
+  text-align: center;
+  margin-top: 80px;
+  color: #333;
+}
+
+@media (max-width: 900px) {
+  .product-page {
+    padding: 25px 20px 50px;
+  }
+
+  .product-layout {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+
+  .image-section {
+    min-height: 360px;
+  }
+}
 </style>
