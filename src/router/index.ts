@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import LandingPage from '../views/LandingPage.vue'
 import HomePage from '../views/HomePage.vue'
 import ProductPage from '../views/ProductPage.vue'
@@ -15,7 +16,11 @@ const routes = [
   { path: '/product/:id', component: ProductPage },
   { path: '/about', component: AboutPage },
   { path: '/contact', component: ContactPage },
-  { path: '/checkout', component: CheckoutPage, meta: { requiresAuth: true } }
+  {
+    path: '/checkout',
+    component: CheckoutPage,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = createRouter({
@@ -27,7 +32,10 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
 
   if (to.meta.requiresAuth && !token) {
-    next('/login')
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
   } else {
     next()
   }

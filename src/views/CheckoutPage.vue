@@ -11,7 +11,6 @@
 
       <span class="text-xl font-bold italic text-[#E8E9E0] font-serif">Haylee</span>
 
-      <!-- ✅ Clickable stepper -->
       <div class="flex items-center gap-2 text-xs uppercase tracking-widest text-[#E8E9E0]">
         <button
           @click="goToStep(1)"
@@ -54,19 +53,19 @@
     </div>
 
     <!-- Empty cart -->
-    <div v-if="cartStore.items.length === 0" class="flex flex-col items-center justify-center h-96 gap-5">
+    <div v-if="cartStore.items.length === 0 && !showSuccess" class="flex flex-col items-center justify-center h-96 gap-5">
       <p class="text-xs uppercase tracking-widest text-[#45553D]">Your bag is empty</p>
       <button
-        @click="router.push('/home')"
+        @click="router.push('/')"
         class="px-8 py-3 rounded-xl text-white text-sm font-semibold bg-[#45553D] hover:bg-[#6D7E5F]"
       >Continue Shopping</button>
     </div>
 
-    <div v-else class="max-w-5xl mx-auto px-6 py-10">
+    <div v-else-if="!showSuccess" class="max-w-5xl mx-auto px-6 py-10">
 
       <!-- ═══════════════ STEP 1: BAG ═══════════════ -->
       <div v-if="currentStep === 1">
-        <h1 class="text-3xl font-bold mb-8 text-[#0D120E]">Your Bag</h1>
+        <h1 class="text-3xl font-bold mb-8 text-[#0D120E]">Your Bag ({{ cartStore.items.length }})</h1>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <!-- Items list -->
           <div class="rounded-2xl p-8 space-y-4" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
@@ -79,9 +78,16 @@
               <div class="flex-1">
                 <p class="text-base font-medium text-[#0D120E]">{{ item.product.title }}</p>
                 <p class="text-xs uppercase tracking-wide text-[#45553D]/60">{{ item.product.brand }}</p>
-                <p class="text-sm text-[#6D7E5F] mt-1">Qty {{ item.quantity }}</p>
+                <p class="text-sm text-[#45553D] font-semibold mt-1">${{ item.product.price }}</p>
+                <p class="text-xs text-[#6D7E5F]">Qty: {{ item.quantity }}</p>
               </div>
-              <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+              <div class="flex flex-col items-end gap-2">
+                <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+                <button
+                  @click="cartStore.removeFromCart(item.product.id)"
+                  class="text-xs text-red-400 hover:text-red-600 transition uppercase tracking-wide"
+                >Remove</button>
+              </div>
             </div>
           </div>
 
@@ -90,7 +96,7 @@
             <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-4">Order Summary</p>
             <div class="space-y-3">
               <div class="flex justify-between text-sm text-[#45553D]/70">
-                <span>Subtotal</span><span>${{ cartStore.totalPrice.toFixed(2) }}</span>
+                <span>Sub Total</span><span>${{ cartStore.totalPrice.toFixed(2) }}</span>
               </div>
               <div class="flex justify-between text-sm text-[#45553D]/70">
                 <span>Shipping</span><span>Free</span>
@@ -100,11 +106,19 @@
               <span class="text-sm uppercase tracking-widest text-[#45553D]/70">Total</span>
               <span class="text-3xl font-bold text-[#45553D]">${{ cartStore.totalPrice.toFixed(2) }}</span>
             </div>
+
+            <!-- KEY FIX: checks auth before proceeding -->
             <button
-              @click="currentStep = 2"
+              @click="proceedToDetails"
               class="w-full mt-6 py-3 rounded-xl text-white text-sm font-semibold bg-[#45553D] hover:bg-[#6D7E5F] transition"
             >
               Proceed to Details →
+            </button>
+            <button
+              @click="router.push('/')"
+              class="w-full mt-3 py-3 rounded-xl text-sm font-medium text-[#45553D] bg-[#45553D]/10 hover:bg-[#45553D]/20 transition"
+            >
+              continue shopping
             </button>
           </div>
         </div>
@@ -113,7 +127,6 @@
       <!-- ═══════════════ STEP 2: DETAILS ═══════════════ -->
       <div v-if="currentStep === 2">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <!-- Form -->
           <div class="rounded-2xl p-10" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
             <h1 class="text-3xl font-bold mb-8 text-[#0D120E]">Checkout Details</h1>
 
@@ -202,7 +215,6 @@
       <!-- ═══════════════ STEP 3: CONFIRM ═══════════════ -->
       <div v-if="currentStep === 3">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <!-- Review details -->
           <div class="rounded-2xl p-10 space-y-8" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
             <h1 class="text-3xl font-bold text-[#0D120E]">Confirm Order</h1>
 
@@ -238,7 +250,6 @@
             </button>
           </div>
 
-          <!-- Final order + place -->
           <div>
             <div class="sticky top-6 rounded-2xl p-8" style="background: rgba(232,233,224,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
               <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-2">Your Order</p>
@@ -280,7 +291,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Success Modal -->
@@ -294,6 +304,43 @@
         </button>
       </div>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h3>Haylee</h3>
+          <p>Everything you need, thoughtfully curated — beauty, tech, home &amp; more.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <RouterLink to="/">Beauty</RouterLink>
+          <RouterLink to="/">Electronics</RouterLink>
+          <RouterLink to="/">Furniture</RouterLink>
+          <RouterLink to="/">Groceries</RouterLink>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <RouterLink to="/about">About us</RouterLink>
+          <RouterLink to="/">Our story</RouterLink>
+          <RouterLink to="/contact">Contact</RouterLink>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>Email: hello@haylee.com</p>
+          <p>Phone: +94 70 123 4324</p>
+          <p>Address: No.20, Grandpass, Colombo 10.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright">©2026 Haylee. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of use</a>
+          <a href="#">Cookie settings</a>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -301,11 +348,13 @@
 import { ref, reactive, defineComponent, h } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
+import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 
-const currentStep = ref(1) // 1 = BAG, 2 = DETAILS, 3 = CONFIRM
+const currentStep = ref(1)
 const loading = ref(false)
 const showSuccess = ref(false)
 
@@ -317,9 +366,17 @@ const form = reactive({
 
 const errors = reactive<Record<string, string>>({})
 
-// Only allow going back, not skipping forward
 function goToStep(step: number) {
   if (step < currentStep.value) currentStep.value = step
+}
+
+// ── KEY FIX: auth check before details ──
+function proceedToDetails() {
+  if (!authStore.isLoggedIn) {
+    router.push({ path: '/login', query: { redirect: '/checkout' } })
+    return
+  }
+  currentStep.value = 2
 }
 
 function proceedToConfirm() {
@@ -351,6 +408,7 @@ const InputField = defineComponent({
 function formatCard() {
   form.cardNumber = form.cardNumber.replace(/\D/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ').trim()
 }
+
 function formatExpiry() {
   form.expiry = form.expiry.replace(/\D/g, '').slice(0, 4).replace(/^(\d{2})(\d)/, '$1/$2')
 }
@@ -381,6 +439,104 @@ async function handlePlaceOrder() {
 function handleDone() {
   cartStore.items.splice(0)
   showSuccess.value = false
-  router.push('/home')
+  router.push('/')
 }
 </script>
+
+<style scoped>
+.footer {
+  background: #3f5745;
+  color: white;
+  padding: 42px 70px 18px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.4fr;
+  gap: 40px;
+  margin-bottom: 28px;
+}
+
+.footer-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer h3 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.footer h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.footer p,
+.footer a {
+  color: #c8cfc0;
+  font-size: 13px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #d6b15c;
+  transition: color 0.2s;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.copyright {
+  font-size: 11px;
+  color: #aab5a2;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-legal a {
+  font-size: 11px;
+  color: #aab5a2;
+}
+
+.footer-legal a:hover {
+  color: #d6b15c;
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer {
+    padding: 35px 24px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

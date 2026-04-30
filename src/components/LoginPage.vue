@@ -53,12 +53,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import im2 from '../assets/im2.jpeg'
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+
 const username = ref('')
 const password = ref('')
 const error = ref('')
@@ -67,9 +69,15 @@ const loading = ref(false)
 async function handleLogin() {
   error.value = ''
   loading.value = true
+
   try {
-    await authStore.login({ username: username.value, password: password.value })
-    router.push('/home')
+    await authStore.login({
+      username: username.value,
+      password: password.value
+    })
+
+    const redirect = (route.query.redirect as string) || '/'
+    router.push(redirect)
   } catch (e) {
     error.value = 'Invalid username or password'
   } finally {
