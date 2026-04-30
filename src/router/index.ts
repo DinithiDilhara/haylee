@@ -1,21 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-import LandingPage from '../views/LandingPage.vue'
 import HomePage from '../views/HomePage.vue'
 import ProductPage from '../views/ProductPage.vue'
-import LoginPage from '../components/LoginPage.vue'
-import AboutPage from '../views/AboutPage.vue'
-import ContactPage from '../views/ContactPage.vue'
+import LoginPage from '../views/LoginPage.vue'
 import CheckoutPage from '../views/CheckoutPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/landing', component: LandingPage },
   { path: '/login', component: LoginPage },
-  { path: '/home', redirect: '/' },
   { path: '/product/:id', component: ProductPage },
-  { path: '/about', component: AboutPage },
-  { path: '/contact', component: ContactPage },
   {
     path: '/checkout',
     component: CheckoutPage,
@@ -30,12 +22,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-
   if (to.meta.requiresAuth && !token) {
-    next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
+    next({ path: '/login', query: { redirect: to.fullPath } })
   } else {
     next()
   }

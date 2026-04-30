@@ -85,9 +85,9 @@
         </div>
         <div>
           <h4>Company</h4>
-          <RouterLink to="/about">About us</RouterLink>
+          <RouterLink to="/">About us</RouterLink>
           <RouterLink to="/">Our story</RouterLink>
-          <RouterLink to="/contact">Contact</RouterLink>
+          <RouterLink to="/">Contact</RouterLink>
         </div>
         <div>
           <h4>Contact</h4>
@@ -134,7 +134,6 @@ const quantity = ref(1)
 const loading = ref(false)
 const error = ref('')
 
-// ── Categories fetched dynamically (not hardcoded) ──
 const selectedCategory = ref('All')
 const categories = ref<string[]>(['All'])
 
@@ -146,7 +145,7 @@ async function loadCategories() {
     const cats = [...new Set(data.products.map((p) => p.category))]
     categories.value = ['All', ...cats]
   } catch {
-    // silently fail — categories just stay as ['All']
+    // silently fail
   }
 }
 
@@ -190,6 +189,7 @@ function addProductToCart() {
 }
 
 onMounted(() => {
+  window.scrollTo(0,0)
   loadProduct()
   loadCategories()
 })
@@ -212,13 +212,13 @@ onMounted(() => {
 
 /* ── PRODUCT PAGE ── */
 .product-page {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 35px 50px 70px;
+  padding: 20px 40px 40px;
 }
 
 .back-btn {
-  margin-bottom: 28px;
+  margin-bottom: 16px;
   font-size: 14px;
   color: #333;
   background: none;
@@ -231,9 +231,9 @@ onMounted(() => {
   color: #16452f;
 }
 
-/* ── SKELETON LOADING ── */
+/* ── SKELETON ── */
 .skeleton-image {
-  height: 560px;
+  height: 420px;
   border-radius: 20px;
   background: linear-gradient(90deg, #e8e0d4 25%, #f0e8dc 50%, #e8e0d4 75%);
   background-size: 200% 100%;
@@ -286,7 +286,7 @@ onMounted(() => {
 .product-layout {
   display: grid;
   grid-template-columns: 1fr 1.05fr;
-  gap: 60px;
+  gap: 40px;
   align-items: start;
 }
 
@@ -294,117 +294,118 @@ onMounted(() => {
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  min-height: 560px;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .main-img {
-  width: 80%;
-  max-height: 520px;
+  width: 75%;
+  max-height: 380px;
   object-fit: contain;
 }
 
 .detail-section {
-  padding: 20px 10px;
+  padding: 10px 10px;
 }
 
 .brand {
   text-transform: uppercase;
   color: #555;
   letter-spacing: 1px;
-  font-size: 14px;
-  margin-bottom: 18px;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 
 h1 {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 52px;
+  font-size: 36px;
   line-height: 1.1;
   letter-spacing: 0.5px;
   color: #111;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .rating {
   color: #f5b400;
-  font-size: 20px;
-  margin-bottom: 22px;
+  font-size: 18px;
+  margin-bottom: 16px;
 }
 
 .rating span {
   color: #333;
-  font-size: 16px;
+  font-size: 14px;
   margin-left: 8px;
 }
 
 .price {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 600;
   letter-spacing: 1px;
   color: #2e3b2c;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .quantity-box p {
   text-transform: uppercase;
   font-family: Georgia, 'Times New Roman', serif;
   letter-spacing: 1px;
+  font-size: 13px;
   margin-bottom: 8px;
 }
 
 .quantity-control {
-  width: 160px;
-  height: 54px;
+  width: 140px;
+  height: 46px;
   border: 1px solid #999;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .quantity-control button {
-  width: 50px;
+  width: 46px;
   height: 100%;
   border: none;
   background: white;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
 }
 
 .quantity-control span {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .description {
-  max-width: 650px;
-  font-size: 17px;
-  line-height: 1.8;
+  max-width: 580px;
+  font-size: 15px;
+  line-height: 1.7;
   color: #333;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .tags {
   display: flex;
   gap: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
 .tag {
-  padding: 6px 14px;
+  padding: 5px 12px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 12px;
   color: #555;
   text-transform: capitalize;
 }
 
 .add-cart {
   width: 100%;
-  max-width: 560px;
-  padding: 18px;
+  max-width: 500px;
+  padding: 16px;
   background: #2e3b2c;
   color: white;
   border: none;
@@ -412,7 +413,7 @@ h1 {
   font-family: Georgia, 'Times New Roman', serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -501,7 +502,7 @@ h1 {
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .product-page {
-    padding: 25px 20px 50px;
+    padding: 20px 20px 40px;
   }
 
   .product-layout {
@@ -509,15 +510,15 @@ h1 {
   }
 
   h1 {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .image-section {
-    min-height: 360px;
+    min-height: 300px;
   }
 
   .skeleton-image {
-    height: 360px;
+    height: 300px;
   }
 
   .footer-grid {
