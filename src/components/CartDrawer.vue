@@ -1,3 +1,4 @@
+
 <template>
   <div
     class="w-96 h-full flex flex-col shadow-xl overflow-y-auto"
@@ -13,7 +14,6 @@
           {{ cartStore.totalItems }}
         </span>
       </h2>
-
       <button @click="$emit('close')" class="text-xl font-bold" style="color: #45553D;">
         ✕
       </button>
@@ -24,7 +24,6 @@
         <p class="text-4xl mb-4">🛒</p>
         <p>Your cart is empty</p>
       </div>
-
       <div v-else class="flex flex-col gap-4">
         <div
           v-for="item in cartStore.items"
@@ -38,28 +37,23 @@
             class="w-16 h-16 object-cover rounded-lg"
             style="background: #fff;"
           />
-
           <div class="flex-1">
             <p class="text-xs uppercase tracking-wide" style="color: #45553D;">
               {{ item.product.brand || item.product.category }}
             </p>
-
             <p
               class="text-sm font-medium line-clamp-1"
               :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'"
             >
               {{ item.product.title }}
             </p>
-
             <p class="text-sm font-bold" style="color: #45553D;">
               ${{ item.product.price }}
             </p>
-
             <p class="text-xs" style="color: #6D7E5F;">
               Qty: {{ item.quantity }}
             </p>
           </div>
-
           <div class="flex flex-col items-end gap-2">
             <button
               @click="cartStore.removeFromCart(item.product.id)"
@@ -68,7 +62,6 @@
             >
               Remove
             </button>
-
             <span class="text-xs" style="color: #6D7E5F;">
               ★ {{ item.product.rating }}
             </span>
@@ -85,12 +78,10 @@
         <span class="font-bold text-lg" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">
           Total
         </span>
-
         <span class="font-bold text-xl" style="color: #45553D;">
           ${{ cartStore.totalPrice.toFixed(2) }}
         </span>
       </div>
-
       <button
         @click="handleCheckout"
         :disabled="cartStore.items.length === 0"
@@ -118,9 +109,7 @@ const emit = defineEmits<{
 
 function handleCheckout() {
   const token = localStorage.getItem('token')
-
   emit('close')
-
   if (!token) {
     router.push({
       path: '/login',
@@ -128,7 +117,6 @@ function handleCheckout() {
     })
     return
   }
-
   router.push('/checkout')
 }
 </script>
