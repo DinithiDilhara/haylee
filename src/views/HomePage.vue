@@ -6,7 +6,7 @@
       <FilterBar
         :categories="categories"
         :selected="selectedCategory"
-        @filter="selectedCategory = $event"
+        @filter="handleFilter"
       />
     </div>
 
@@ -220,6 +220,17 @@ function handleSubmit() {
   setTimeout(() => {
     submitted.value = false
   }, 4000)
+}
+
+// ── Filter with scroll ──
+function handleFilter(category: string) {
+  selectedCategory.value = category
+  const section = document.querySelector('.featured-label') as HTMLElement
+  if (section) {
+    const headerHeight = document.querySelector('.sticky-header')?.clientHeight || 0
+    const top = section.getBoundingClientRect().top + window.scrollY - headerHeight - 16
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
 }
 
 // ── Scroll to story ──
