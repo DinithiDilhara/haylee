@@ -1,13 +1,8 @@
 <template>
   <div class="min-h-screen bg-[#f0ede6]">
     <!-- Top bar -->
-    <div class="flex items-center justify-between px-8 py-4 bg-[#45553D]">
-      <button
-        @click="currentStep > 1 ? currentStep-- : router.back()"
-        class="text-sm font-medium text-[#E8E9E0]/70 hover:text-[#E8E9E0] transition"
-      >
-        ← Back
-      </button>
+    <div class="flex items-center justify-between px-8 py-3 bg-[#45553D]">
+      <button class="text-[#E8E9E0]/70 hover:text-[#E8E9E0] text-xl">☰</button>
 
       <span class="text-xl font-bold italic text-[#E8E9E0] font-serif">Haylee</span>
 
@@ -26,49 +21,58 @@
       <button @click="router.push('/')" class="px-8 py-3 rounded-xl text-white text-sm font-semibold bg-[#45553D] hover:bg-[#6D7E5F]">Continue Shopping</button>
     </div>
 
-    <div v-else-if="!showSuccess" class="max-w-5xl mx-auto px-6 py-10">
+    <div v-else-if="!showSuccess" class="max-w-4xl mx-auto px-6 py-8">
 
-      <!-- STEP 1: BAG -->
+      <!-- ═══════════════ STEP 1: BAG ═══════════════ -->
       <div v-if="currentStep === 1">
-        <h1 class="text-3xl font-bold mb-8 text-[#0D120E]">Your Bag ({{ cartStore.items.length }})</h1>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <div class="rounded-2xl p-8 space-y-4" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
+        <h1 class="text-2xl font-bold mb-6 text-[#0D120E]">Your Bag ({{ cartStore.items.length }})</h1>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Items list -->
+          <div class="rounded-xl p-6 space-y-4" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
             <div v-for="item in cartStore.items" :key="item.product.id" class="flex items-center gap-4 pb-4 border-b border-[#45553D]/10 last:border-0 last:pb-0">
-              <img :src="item.product.thumbnail" class="w-16 h-16 rounded-xl object-cover bg-white p-2" />
+              <img :src="item.product.thumbnail" class="w-14 h-14 rounded-lg object-cover bg-white p-1" />
               <div class="flex-1">
-                <p class="text-base font-medium text-[#0D120E]">{{ item.product.title }}</p>
-                <p class="text-xs uppercase tracking-wide text-[#45553D]/60">{{ item.product.brand }}</p>
-                <p class="text-sm text-[#45553D] font-semibold mt-1">${{ item.product.price }}</p>
-                <p class="text-xs text-[#6D7E5F]">Qty: {{ item.quantity }}</p>
+                <p class="text-sm font-semibold text-[#0D120E]">{{ item.product.brand }}</p>
+                <p class="text-sm text-[#45553D]">{{ item.product.title }}</p>
+                <p class="text-sm font-bold text-[#45553D] mt-1">${{ item.product.price }}</p>
+                <p class="text-xs text-[#6D7E5F]">Qty:{{ item.quantity }}</p>
               </div>
               <div class="flex flex-col items-end gap-2">
-                <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+                <p class="text-xs text-[#6D7E5F]">★ {{ item.product.rating }}</p>
                 <button @click="cartStore.removeFromCart(item.product.id)" class="text-xs text-red-400 hover:text-red-600 transition uppercase tracking-wide">Remove</button>
               </div>
             </div>
           </div>
 
-          <div class="rounded-2xl p-8 sticky top-6" style="background: rgba(232,233,224,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
-            <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-4">Order Summary</p>
-            <div class="space-y-3">
-              <div class="flex justify-between text-sm text-[#45553D]/70"><span>Sub Total</span><span>${{ cartStore.totalPrice.toFixed(2) }}</span></div>
-              <div class="flex justify-between text-sm text-[#45553D]/70"><span>Shipping</span><span>Free</span></div>
+          <!-- Order Summary -->
+          <div class="rounded-xl p-6" style="background: rgba(232,233,224,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
+            <p class="text-base font-bold text-[#0D120E] mb-4">Order Summary</p>
+            <div class="space-y-3 mb-4">
+              <div class="flex justify-between text-sm text-[#45553D]/70">
+                <span>Sub Total</span><span>$ {{ cartStore.totalPrice.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between text-sm text-[#45553D]/70">
+                <span>Shipping</span><span>Free</span>
+              </div>
             </div>
-            <div class="flex justify-between items-center mt-6 pt-6 border-t border-[#45553D]/20">
-              <span class="text-sm uppercase tracking-widest text-[#45553D]/70">Total</span>
-              <span class="text-3xl font-bold text-[#45553D]">${{ cartStore.totalPrice.toFixed(2) }}</span>
+            <div class="border-t border-[#45553D]/20 pt-4 mb-6">
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-[#45553D]/70">Total</span>
+                <span class="text-2xl font-bold text-[#0D120E]">$ {{ cartStore.totalPrice.toFixed(2) }}</span>
+              </div>
             </div>
-            <button @click="proceedToDetails" class="w-full mt-6 py-3 rounded-xl text-white text-sm font-semibold bg-[#45553D] hover:bg-[#6D7E5F] transition">
-              Proceed to Details →
+            <button @click="proceedToDetails" class="w-full py-3 rounded-lg text-white text-sm font-semibold bg-[#45553D] hover:bg-[#6D7E5F] transition mb-3">
+              Proceed to Details
             </button>
-            <button @click="router.push('/')" class="w-full mt-3 py-3 rounded-xl text-sm font-medium text-[#45553D] bg-[#45553D]/10 hover:bg-[#45553D]/20 transition">
+            <button @click="router.push('/')" class="w-full py-3 rounded-lg text-sm font-medium text-[#45553D] bg-[#45553D]/10 hover:bg-[#45553D]/20 transition">
               continue shopping
             </button>
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: DETAILS -->
+      <!-- ═══════════════ STEP 2: DETAILS ═══════════════ -->
       <div v-if="currentStep === 2">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div class="rounded-2xl p-10" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
@@ -126,7 +130,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: CONFIRM -->
+      <!-- ═══════════════ STEP 3: CONFIRM ═══════════════ -->
       <div v-if="currentStep === 3">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div class="rounded-2xl p-10 space-y-8" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
@@ -251,7 +255,6 @@ const form = reactive({
 
 const errors = reactive<Record<string, string>>({})
 
-// If redirected back after login with step=2, jump straight to details
 onMounted(() => {
   if (route.query.step === '2' && authStore.isLoggedIn) {
     currentStep.value = 2
