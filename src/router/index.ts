@@ -3,10 +3,12 @@ import HomePage from '../views/HomePage.vue'
 import ProductPage from '../views/ProductPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import CheckoutPage from '../views/CheckoutPage.vue'
+import SignupPage from '../views/SignupPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
   { path: '/login', component: LoginPage },
+  { path: '/signup', component: SignupPage },
   { path: '/product/:id', component: ProductPage },
   {
     path: '/checkout',

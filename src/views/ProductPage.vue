@@ -185,7 +185,7 @@ function addProductToCart() {
   for (let i = 0; i < quantity.value; i++) {
     cartStore.addToCart(product.value)
   }
-  showCart.value = true
+ 
 }
 
 onMounted(() => {

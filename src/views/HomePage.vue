@@ -268,8 +268,8 @@ onMounted(() => {
 
 /* ── FEATURED LABELS ── */
 .featured-label {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: 600;
   color: #888;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -277,8 +277,8 @@ onMounted(() => {
 }
 
 .shop-label {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 600;
   color: #1a1a1a;
   margin-bottom: 20px;
 }
@@ -350,17 +350,17 @@ onMounted(() => {
 
 .small-title {
   color: #d6b15c;
-  font-size: 14px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 16px;
 }
 
 .story-left h2 {
-  font-family: Georgia, serif;
+  font-family: playfair display;
   font-size: 40px;
-  line-height: 1.15;
+  line-height: 1.6;
   color: #16452f;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .story-right {
@@ -374,10 +374,10 @@ onMounted(() => {
 .year-box {
   width: 100%;
   max-width: 420px;
-  height: 76px;
+  height: 90px;
   background: #16452f;
   color: #d6b15c;
-  border-radius: 6px;
+  border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -389,11 +389,13 @@ onMounted(() => {
 .stats {
   display: flex;
   gap: 20px;
+  width: 100%;
+  max-width: 420px;
 }
 
 .stat-card {
-  width: 130px;
-  height: 88px;
+  flex: 1;
+  height: 110px;
   background: white;
   border-radius: 6px;
   display: flex;
@@ -407,11 +409,11 @@ onMounted(() => {
   font-family: Georgia, serif;
   font-size: 26px;
   color: #6d9b82;
-  line-height: 1;
+  line-height: 1.5;
 }
 
 .stat-card span {
-  font-family: Georgia, serif;
+  font-family: playfair display;
   font-size: 10px;
   color: #333;
   text-align: center;
@@ -424,7 +426,7 @@ onMounted(() => {
   margin: 0 auto;
   text-align: center;
   font-family: Georgia, serif;
-  font-size: 13.5px;
+  font-size: 20px;
   line-height: 1.55;
   color: #444;
 }
@@ -441,8 +443,8 @@ onMounted(() => {
 
 .contact-small {
   color: #d6b15c;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 40px;
+  font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 20px;
 }

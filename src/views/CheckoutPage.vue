@@ -1,12 +1,9 @@
 <template>
   <div class="min-h-screen bg-[#f0ede6]">
     <!-- Top bar -->
-    <div class="flex items-center justify-between px-8 py-3 bg-[#45553D]">
-      <button class="text-[#E8E9E0]/70 hover:text-[#E8E9E0] text-xl">☰</button>
-
-      <span class="text-xl font-bold italic text-[#E8E9E0] font-serif">Haylee</span>
-
-      <div class="flex items-center gap-2 text-xs uppercase tracking-widest text-[#E8E9E0]">
+    <div class="relative flex items-center justify-center px-8 py-3 bg-[#45553D]">
+      <span class="font-bold text-[#E8E9E0] cursor-pointer" style="font-family: 'Alegreya Sans', serif; font-size: 48px;" @click="router.push('/')">Haylee</span>
+      <div class="absolute right-8 flex items-center gap-2 text-xs uppercase tracking-widest text-[#E8E9E0]">
         <button @click="goToStep(1)" :class="['transition pb-1', currentStep === 1 ? 'border-b border-[#E8E9E0] opacity-100' : currentStep > 1 ? 'opacity-70 hover:opacity-100' : 'opacity-40 cursor-not-allowed']">BAG</button>
         <span class="opacity-40">—</span>
         <button @click="goToStep(2)" :class="['transition pb-1', currentStep === 2 ? 'border-b border-[#E8E9E0] opacity-100' : currentStep > 2 ? 'opacity-70 hover:opacity-100' : 'opacity-40 cursor-not-allowed']">DETAILS</button>
@@ -27,8 +24,6 @@
       <div v-if="currentStep === 1">
         <h1 class="text-2xl font-bold mb-6 text-[#0D120E]">Your Bag ({{ cartStore.items.length }})</h1>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-          <!-- Items list -->
           <div class="rounded-xl p-6 space-y-4" style="background: rgba(232,233,224,0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
             <div v-for="item in cartStore.items" :key="item.product.id" class="flex items-center gap-4 pb-4 border-b border-[#45553D]/10 last:border-0 last:pb-0">
               <img :src="item.product.thumbnail" class="w-14 h-14 rounded-lg object-cover bg-white p-1" />
@@ -44,8 +39,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Order Summary -->
           <div class="rounded-xl p-6" style="background: rgba(232,233,224,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4);">
             <p class="text-base font-bold text-[#0D120E] mb-4">Order Summary</p>
             <div class="space-y-3 mb-4">
@@ -80,29 +73,29 @@
             <section class="mb-8">
               <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-4">Contact Information</p>
               <div class="grid grid-cols-2 gap-4 mb-4">
-                <InputField label="First Name" v-model="form.firstName" :error="errors.firstName" />
-                <InputField label="Last Name" v-model="form.lastName" :error="errors.lastName" />
+                <InputField label="First Name" v-model="form.firstName" :error="errors.firstName" name="fname" autocomplete="given-name" />
+                <InputField label="Last Name" v-model="form.lastName" :error="errors.lastName" name="lname" autocomplete="family-name" />
               </div>
-              <div class="mb-4"><InputField label="Email Address" type="email" v-model="form.email" :error="errors.email" /></div>
-              <InputField label="Phone" type="tel" v-model="form.phone" :error="errors.phone" />
+              <div class="mb-4"><InputField label="Email Address" type="email" v-model="form.email" :error="errors.email" name="email" autocomplete="email" /></div>
+              <InputField label="Phone" type="tel" v-model="form.phone" :error="errors.phone" name="tel" autocomplete="tel" />
             </section>
             <div class="h-px bg-[#45553D]/10 mb-8"></div>
             <section class="mb-8">
               <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-4">Delivery Address</p>
-              <div class="mb-4"><InputField label="Street Address" v-model="form.address" :error="errors.address" /></div>
+              <div class="mb-4"><InputField label="Street Address" v-model="form.address" :error="errors.address" name="address" autocomplete="street-address" /></div>
               <div class="grid grid-cols-2 gap-4 mb-4">
-                <InputField label="City" v-model="form.city" :error="errors.city" />
-                <InputField label="Postal Code" v-model="form.postalCode" :error="errors.postalCode" />
+                <InputField label="City" v-model="form.city" :error="errors.city" name="city" autocomplete="address-level2" />
+                <InputField label="Postal Code" v-model="form.postalCode" :error="errors.postalCode" name="postal" autocomplete="postal-code" />
               </div>
-              <InputField label="Country" v-model="form.country" :error="errors.country" />
+              <InputField label="Country" v-model="form.country" :error="errors.country" name="country" autocomplete="country-name" />
             </section>
             <div class="h-px bg-[#45553D]/10 mb-8"></div>
             <section>
               <p class="text-xs uppercase tracking-widest text-[#45553D]/70 mb-4">Payment</p>
-              <div class="mb-4"><InputField label="Card Number" v-model="form.cardNumber" :error="errors.cardNumber" maxlength="19" @input="formatCard" /></div>
+              <div class="mb-4"><InputField label="Card Number" v-model="form.cardNumber" :error="errors.cardNumber" maxlength="19" name="cardnumber" autocomplete="cc-number" @input="formatCard" /></div>
               <div class="grid grid-cols-2 gap-4">
-                <InputField label="Expiry" v-model="form.expiry" :error="errors.expiry" maxlength="5" @input="formatExpiry" />
-                <InputField label="CVV" type="password" v-model="form.cvv" :error="errors.cvv" maxlength="4" />
+                <InputField label="Expiry" v-model="form.expiry" :error="errors.expiry" maxlength="5" name="expiry" autocomplete="cc-exp" @input="formatExpiry" />
+                <InputField label="CVV" type="password" v-model="form.cvv" :error="errors.cvv" maxlength="4" name="cvv" autocomplete="off" />
               </div>
             </section>
           </div>
@@ -117,7 +110,18 @@
                   <p class="text-base font-medium text-[#0D120E]">{{ item.product.title }}</p>
                   <p class="text-sm text-[#6D7E5F] mt-1">Qty {{ item.quantity }}</p>
                 </div>
-                <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+                <div class="flex flex-col items-end gap-1">
+                  <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
+                  <button @click="cartStore.removeFromCart(item.product.id)" class="text-xs text-red-400 hover:text-red-600 transition uppercase tracking-wide">Remove</button>
+                </div>
+              </div>
+              <div class="mt-4 space-y-2">
+                <div class="flex justify-between text-sm text-[#45553D]/70">
+                  <span>Sub Total</span><span>${{ cartStore.totalPrice.toFixed(2) }}</span>
+                </div>
+                <div class="flex justify-between text-sm text-[#45553D]/70">
+                  <span>Shipping</span><span>Free</span>
+                </div>
               </div>
               <div class="flex justify-between items-center mt-6 pt-6 border-t border-[#45553D]/20">
                 <span class="text-sm uppercase tracking-widest text-[#45553D]/70">Total</span>
@@ -169,6 +173,14 @@
                 </div>
                 <p class="text-sm font-bold text-[#45553D]">${{ (item.product.price * item.quantity).toFixed(2) }}</p>
               </div>
+              <div class="mt-4 space-y-2">
+                <div class="flex justify-between text-sm text-[#45553D]/70">
+                  <span>Sub Total</span><span>${{ cartStore.totalPrice.toFixed(2) }}</span>
+                </div>
+                <div class="flex justify-between text-sm text-[#45553D]/70">
+                  <span>Shipping</span><span>Free</span>
+                </div>
+              </div>
               <div class="flex justify-between items-center mt-6 pt-6 border-t border-[#45553D]/20">
                 <span class="text-sm uppercase tracking-widest text-[#45553D]/70">Total</span>
                 <span class="text-3xl font-bold text-[#45553D]">${{ cartStore.totalPrice.toFixed(2) }}</span>
@@ -184,7 +196,7 @@
     </div>
 
     <!-- Success Modal -->
-    <div v-if="showSuccess" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div v-if="showSuccess" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
       <div class="bg-[#f0ede6] rounded-2xl p-10 max-w-sm w-[90%] text-center">
         <div class="w-14 h-14 rounded-full bg-[#45553D] flex items-center justify-center mx-auto mb-5 text-[#E8E9E0] text-2xl">✓</div>
         <h2 class="text-3xl font-bold text-[#0D120E] mb-2">Order Placed</h2>
@@ -233,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, defineComponent, h, onMounted } from 'vue'
+import { ref, reactive, defineComponent, h, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
@@ -248,10 +260,25 @@ const loading = ref(false)
 const showSuccess = ref(false)
 
 const form = reactive({
-  firstName: '', lastName: '', email: '', phone: '',
-  address: '', city: '', postalCode: '', country: '',
-  cardNumber: '', expiry: '', cvv: '',
+  firstName: localStorage.getItem('form_firstName') || '',
+  lastName: localStorage.getItem('form_lastName') || '',
+  email: localStorage.getItem('form_email') || '',
+  phone: localStorage.getItem('form_phone') || '',
+  address: localStorage.getItem('form_address') || '',
+  city: localStorage.getItem('form_city') || '',
+  postalCode: localStorage.getItem('form_postalCode') || '',
+  country: localStorage.getItem('form_country') || '',
+  cardNumber: '',
+  expiry: '',
+  cvv: '',
 })
+
+watch(form, (val) => {
+  const keys = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'postalCode', 'country']
+  keys.forEach(key => {
+    localStorage.setItem(`form_${key}`, (val as any)[key])
+  })
+}, { deep: true })
 
 const errors = reactive<Record<string, string>>({})
 
@@ -259,10 +286,14 @@ onMounted(() => {
   if (route.query.step === '2' && authStore.isLoggedIn) {
     currentStep.value = 2
   }
+  window.scrollTo(0, 0)
 })
 
 function goToStep(step: number) {
-  if (step < currentStep.value) currentStep.value = step
+  if (step < currentStep.value) {
+    currentStep.value = step
+    window.scrollTo(0, 0)
+  }
 }
 
 function proceedToDetails() {
@@ -271,16 +302,21 @@ function proceedToDetails() {
     return
   }
   currentStep.value = 2
+  window.scrollTo(0, 0)
 }
 
 function proceedToConfirm() {
-  if (validate()) currentStep.value = 3
+  if (validate()) {
+    currentStep.value = 3
+    window.scrollTo(0, 0)
+  }
 }
 
 const InputField = defineComponent({
   props: {
     label: String, modelValue: String, error: String,
     type: { type: String, default: 'text' }, maxlength: String,
+    name: String, autocomplete: String,
   },
   emits: ['update:modelValue', 'input'],
   setup(props, { emit }) {
@@ -288,6 +324,7 @@ const InputField = defineComponent({
       h('label', { class: 'block text-xs uppercase tracking-wide text-[#45553D]/60 mb-2' }, props.label),
       h('input', {
         value: props.modelValue, type: props.type, maxlength: props.maxlength,
+        name: props.name, autocomplete: props.autocomplete,
         onInput: (e: Event) => {
           emit('update:modelValue', (e.target as HTMLInputElement).value)
           emit('input')
@@ -327,12 +364,15 @@ async function handlePlaceOrder() {
   loading.value = true
   await new Promise((resolve) => setTimeout(resolve, 1500))
   loading.value = false
+  document.body.style.overflow = 'hidden'
+  window.scrollTo(0, 0)
   showSuccess.value = true
 }
 
 function handleDone() {
   cartStore.items.splice(0)
   showSuccess.value = false
+  document.body.style.overflow = ''
   router.push('/')
 }
 </script>

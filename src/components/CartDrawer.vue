@@ -1,4 +1,3 @@
-
 <template>
   <div
     class="w-96 h-full flex flex-col shadow-xl overflow-y-auto"
@@ -50,9 +49,6 @@
             <p class="text-sm font-bold" style="color: #45553D;">
               ${{ item.product.price }}
             </p>
-            <p class="text-xs" style="color: #6D7E5F;">
-              Qty: {{ item.quantity }}
-            </p>
           </div>
           <div class="flex flex-col items-end gap-2">
             <button
@@ -62,6 +58,11 @@
             >
               Remove
             </button>
+            <div class="qty-control">
+              <button @click="cartStore.decreaseQuantity(item.product.id)" class="qty-btn">−</button>
+              <span class="qty-num" :style="themeStore.isDark ? 'color: #E8E9E0;' : 'color: #0D120E;'">{{ item.quantity }}</span>
+              <button @click="cartStore.increaseQuantity(item.product.id)" class="qty-btn">+</button>
+            </div>
             <span class="text-xs" style="color: #6D7E5F;">
               ★ {{ item.product.rating }}
             </span>
@@ -120,3 +121,34 @@ function handleCheckout() {
   router.push('/checkout')
 }
 </script>
+
+<style scoped>
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #45553D;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.qty-btn:hover {
+  color: #16452f;
+}
+
+.qty-num {
+  font-size: 13px;
+  min-width: 16px;
+  text-align: center;
+}
+</style>
